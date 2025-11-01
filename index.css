@@ -359,3 +359,7 @@ body {
         width:100%;
     }
 }
+.animated {
+    will-change: transform, opacity; /* Tells the browser to optimize for these changes */
+    transform: translateZ(0); /* A common trick to force GPU layer */
+}
