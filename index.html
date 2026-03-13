@@ -10,50 +10,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="index.css">
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        (function() {
-            emailjs.init("S69lkhJDQpU_CA36k");
-        })();
-
-        function sendEmail() {
-            const name    = document.getElementById("from_name").value.trim();
-            const email   = document.getElementById("from_email").value.trim();
-            const message = document.getElementById("message").value.trim();
-            const btn     = document.getElementById("send_btn");
-
-            if (!name || !email || !message) {
-                showStatus("please fill in all fields.", "error");
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = "sending...";
-
-            emailjs.send("service_e2qw02c", "template_2j52vfu", {
-                from_name:  name,
-                from_email: email,
-                message:    message
-            }).then(function() {
-                showStatus("message sent! i'll get back to you soon.", "success");
-                document.getElementById("contact_form").reset();
-                btn.disabled = false;
-                btn.textContent = "send";
-            }, function(error) {
-                showStatus("something went wrong. please try again.", "error");
-                console.error("EmailJS error:", error);
-                btn.disabled = false;
-                btn.textContent = "send";
-            });
-        }
-
-        function showStatus(msg, type) {
-            const status = document.getElementById("form_status");
-            status.textContent = msg;
-            status.style.display = "block";
-            status.style.color = type === "success" ? "#aaffaa" : "#ffaaaa";
-        }
-    </script>
 </head>
 <body>
     <div id="loading">
@@ -227,5 +183,50 @@
     <script src="index.js" type="text/javascript"></script>
     <script src="particles.js"></script>
     <script src="app.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("S69lkhJDQpU_CA36k");
+        })();
+
+        function sendEmail() {
+            const name    = document.getElementById("from_name").value.trim();
+            const email   = document.getElementById("from_email").value.trim();
+            const message = document.getElementById("message").value.trim();
+            const btn     = document.getElementById("send_btn");
+
+            if (!name || !email || !message) {
+                showStatus("please fill in all fields.", "error");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "sending...";
+
+            emailjs.send("service_e2qw02c", "template_2j52vfu", {
+                from_name:  name,
+                from_email: email,
+                message:    message
+            }).then(function() {
+                showStatus("message sent! i'll get back to you soon.", "success");
+                document.getElementById("contact_form").reset();
+                btn.disabled = false;
+                btn.textContent = "send";
+            }, function(error) {
+                showStatus("something went wrong. please try again.", "error");
+                console.error("EmailJS error:", error);
+                btn.disabled = false;
+                btn.textContent = "send";
+            });
+        }
+
+        function showStatus(msg, type) {
+            const status = document.getElementById("form_status");
+            status.textContent = msg;
+            status.style.display = "block";
+            status.style.color = type === "success" ? "#aaffaa" : "#ffaaaa";
+        }
+    </script>
 </body>
 </html>
