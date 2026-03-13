@@ -10,6 +10,50 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("S69lkhJDQpU_CA36k");
+        })();
+
+        function sendEmail() {
+            const name    = document.getElementById("from_name").value.trim();
+            const email   = document.getElementById("from_email").value.trim();
+            const message = document.getElementById("message").value.trim();
+            const btn     = document.getElementById("send_btn");
+
+            if (!name || !email || !message) {
+                showStatus("please fill in all fields.", "error");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "sending...";
+
+            emailjs.send("service_e2qw02c", "template_2j52vfu", {
+                from_name:  name,
+                from_email: email,
+                message:    message
+            }).then(function() {
+                showStatus("message sent! i'll get back to you soon.", "success");
+                document.getElementById("contact_form").reset();
+                btn.disabled = false;
+                btn.textContent = "send";
+            }, function(error) {
+                showStatus("something went wrong. please try again.", "error");
+                console.error("EmailJS error:", error);
+                btn.disabled = false;
+                btn.textContent = "send";
+            });
+        }
+
+        function showStatus(msg, type) {
+            const status = document.getElementById("form_status");
+            status.textContent = msg;
+            status.style.display = "block";
+            status.style.color = type === "success" ? "#aaffaa" : "#ffaaaa";
+        }
+    </script>
 </head>
 <body>
     <div id="loading">
@@ -166,14 +210,16 @@
             <section>
                 <h2>contact me</h2>
                 <p>
-                    <form>
-                        <input type="text" placeholder="name" required>
-                        <input type="email" placeholder="email" required><br>
-                        <textarea placeholder="your message" required rows="5"></textarea><br>
-                        <button class="btn_one">send</button>
-                    </form> 
+                    <form id="contact_form">
+                        <input type="text" id="from_name" placeholder="name" required>
+                        <input type="email" id="from_email" placeholder="email" required><br>
+                        <textarea id="message" placeholder="your message" required rows="5"></textarea><br>
+                        <button class="btn_one" type="button" id="send_btn" onclick="sendEmail()">send</button>
+                    </form>
+                    <p id="form_status" style="display:none; margin-top: 10px;"></p>
                 </p>
             </section>
+        </div>
         </div>
         <div id="footer">
             made on earth by a human <br> <a href="https://imfunniee.github.io">imfunniee</a>
